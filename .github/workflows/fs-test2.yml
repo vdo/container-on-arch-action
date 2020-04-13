@@ -1,0 +1,30 @@
+  
+on: [push]
+
+jobs:  
+  fs-issue-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+    - name: Build and install the executable
+      uses: uraimo/run-on-arch-action@v1.0.7
+      id: runcmd
+      with:
+        architecture: armv7
+        distribution: buster
+        run: |
+          apt update && apt install -y git curl
+          mkdir -p ~
+          git config --global http.sslverify false
+          git clone https://github.com/Y2Z/monolith.git
+          cd monolith
+          echo "--insecure" > ~/.curlrc
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          PATH=$PATH:~/.cargo/bin cargo install --force --locked --path . --root .
+          gzip --best bin/monolith
+          echo ::set-output name=data::$(base64 bin/monolith.gz)
+    - name: Get the output
+      run: |
+          mkdir bin
+          echo ${{ steps.runcmd.outputs.data }} | zcat | base64 -d > bin/monolith-armv6
