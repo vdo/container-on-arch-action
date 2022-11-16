@@ -59,8 +59,8 @@ jobs:
 
       - name: Assert container receives environment variables
         run: |
-          arch="${{ steps.build.outputs.env_arch }}"
-          image="${{ steps.build.outputs.env_image }}"
+          arch="${{ steps.run.outputs.env_arch }}"
+          image="${{ steps.run.outputs.env_image }}"
 
           echo "Assert env_arch: '$arch' == '${{ matrix.arch }}'"
           test "$arch" == "${{ matrix.arch }}"
