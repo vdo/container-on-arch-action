@@ -16,6 +16,7 @@ async function main() {
 
   const arch = core.getInput('arch', { required: true });
   const image  = core.getInput('image', { required: true });
+  const shell  = core.getInput('shell', { required: false });
 
   // // If bad arch/container passed, fail fast before installing all the qemu stuff
   // const dockerFile = path.join(
