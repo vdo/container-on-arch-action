@@ -60,14 +60,14 @@ run_container() {
   # Run the container.
 
   # Run user-provided setup script, in same shell
-  source "${ACTION_DIR}/src/run-on-arch-setup.sh"
+  source "${ACTION_DIR}/src/container-on-arch-setup.sh"
 
   # Interpolate DOCKER_RUN_ARGS, to support evaluation of $VAR references
   for i in "${!DOCKER_RUN_ARGS[@]}"; do
     DOCKER_RUN_ARGS[$i]=$(eval echo "${DOCKER_RUN_ARGS[$i]}")
   done
 
-  chmod +x "${ACTION_DIR}/src/run-on-arch-commands.sh"
+  chmod +x "${ACTION_DIR}/src/container-on-arch-commands.sh"
 
   # The location of the event.json file
   EVENT_DIR=$(dirname "$GITHUB_EVENT_PATH")
@@ -109,7 +109,7 @@ run_container() {
     --name ${CONTAINER_NAME} \
     ${DOCKER_RUN_ARGS[@]} \
     "${IMAGE_NAME}" \
-    "${ACTION_DIR}/src/run-on-arch-commands.sh"
+    "${ACTION_DIR}/src/container-on-arch-commands.sh"
 }
 
 # Installing deps produces a lot of log noise, so we do so quietly
