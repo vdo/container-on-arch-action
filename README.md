@@ -1,25 +1,26 @@
-# Run-On-Arch GitHub Action
+# Container-On-Arch GitHub Action
 
 [![](https://github.com/uraimo/run-on-arch-action/workflows/test/badge.svg)](https://github.com/uraimo/run-on-arch-action)
 
 A GitHub Action that executes commands on non-x86 CPU architecture (armv6, armv7, aarch64, s390x, ppc64le) via QEMU.
 
+Originally forked and based on [Run-On-Arch](https://github.com/uraimo/run-on-arch-action) action.
+
 ## Usage
 
 This action requires three input parameters:
 
-* `arch`: CPU architecture: `armv6`, `armv7`, `aarch64`, `s390x`, or `ppc64le`. See [Supported Platforms](#supported-platforms) for the full matrix.
-* `distro`: Linux distribution name: `ubuntu16.04`, `ubuntu18.04`, `ubuntu20.04`, `bullseye`, `buster`, `stretch`, `jessie`, `fedora_latest`, `alpine_latest` or `archarm_latest`. See [Supported Platforms](#supported-platforms) for the full matrix.
-* `run`: Shell commands to execute in the container.
+- `arch`: CPU architecture: `armv6`, `armv7`, `aarch64`, `s390x`, or `ppc64le`. See [Supported Platforms](#supported-platforms) for the full matrix.
+- `image`: Image name. Examples: `ubuntu:20.04`, `debian:bullseye`, `nginx`,
+- `run`: Shell commands to execute in the container.
 
 The action also accepts some optional input parameters:
 
-* `githubToken`: Your GitHub token, used for caching Docker images in your project's public package registry. Usually this would just be `${{ github.token }}`. This speeds up subsequent builds and is highly recommended.
-* `env`: Environment variables to propagate to the container. YAML, but must begin with a `|` character. These variables will be available in both run and setup.
-* `shell`: The shell to run commands with in the container. Default: `/bin/sh` on Alpine, `/bin/bash` for other distros.
-* `dockerRunArgs`: Additional arguments to pass to `docker run`, such as volume mappings. See [`docker run` documentation](https://docs.docker.com/engine/reference/commandline/run).
-* `setup`: Shell commands to execute on the host before running the container, such as creating directories for volume mappings.
-* `install`: Shell commands to execute in the container as part of `docker build`, such as installing dependencies. This speeds up subsequent builds if `githubToken` is also used, but note that the image layer will be publicly available in your projects GitHub Package Registry, so make sure the resulting image does not have any secrets cached in logs or state.
+- `githubToken`: Your GitHub token, used for logging in to pull private images in ghcr.io. Usually this would just be `${{ github.token }}`.
+- `env`: Environment variables to propagate to the container. YAML, but must begin with a `|` character. These variables will be available in both run and setup.
+- `shell`: The shell to run commands with in the container. Default: `/bin/sh`.
+- `dockerRunArgs`: Additional arguments to pass to `docker run`, such as volume mappings. See [`docker run` documentation](https://docs.docker.com/engine/reference/commandline/run).
+- `setup`: Shell commands to execute on the host before running the container, such as creating directories for volume mappings.
 
 ### Basic example
 
@@ -142,29 +143,9 @@ jobs:
           ls -al "${PWD}/artifacts"
 ```
 
-## Supported Platforms
-
-This table details the valid `arch`/`distro` combinations:
-
-
-| arch     | distro     |
-| -------- | ---------- |
-| armv6    | jessie, stretch, buster, bullseye, alpine_latest |
-| armv7    | jessie, stretch, buster, bullseye, ubuntu16.04, ubuntu18.04, ubuntu20.04, ubuntu22.04, ubuntu_latest, ubuntu_rolling, ubuntu_devel, fedora_latest, alpine_latest, archarm_latest |
-| aarch64  | stretch, buster, bullseye, ubuntu16.04, ubuntu18.04, ubuntu20.04, ubuntu22.04, ubuntu_latest, ubuntu_rolling, ubuntu_devel, fedora_latest, alpine_latest, archarm_latest |
-| s390x    | jessie, stretch, buster, bullseye, ubuntu16.04, ubuntu18.04, ubuntu20.04, ubuntu22.04, ubuntu_latest, ubuntu_rolling, ubuntu_devel, fedora_latest, alpine_latest |
-| ppc64le  | jessie, stretch, buster, bullseye, ubuntu16.04, ubuntu18.04,ubuntu20.04, ubuntu22.04, ubuntu_latest, ubuntu_rolling, ubuntu_devel, fedora_latest, alpine_latest |
-
-
-Using an invalid `arch`/`distro` combination will fail.
-
 ## Architecture emulation
 
 This project makes use of an additional QEMU container to be able to emulate via software architectures like ARM, s390x, ppc64le, etc... that are not natively supported by GitHub. You should keep this into consideration when reasoning about the expected running time of your jobs, there will be a visible impact on performance when compared to a job executed on a vanilla runner.
-
-## Contributing
-
-New distros and archs can be added simply by creating a Dockerfile named `Dockerfile.{arch}.{distro}` (that targets an image for the desired combination) in the [Dockerfiles](https://github.com/uraimo/run-on-arch-action/blob/master/Dockerfiles) directory. Pull requests welcome!
 
 ## Authors
 
@@ -172,7 +153,7 @@ New distros and archs can be added simply by creating a Dockerfile named `Docker
 
 [Elijah Shaw-Rutschman](https://github.com/elijahr)
 
-And many other [contributors](https://github.com/uraimo/run-on-arch-action/graphs/contributors).
+[Abel Boldú](https://github.com/vdo)
 
 ## License
 
