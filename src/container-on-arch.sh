@@ -53,7 +53,7 @@ pull_container() {
       --password-stdin
     set "$BASH_FLAGS"
   fi
-  docker pull "$CONTAINER_IMAGE" || true
+  docker pull "$IMAGE_NAME" || true
 }
 
 run_container() {
@@ -108,7 +108,7 @@ run_container() {
     --tty \
     --name ${CONTAINER_NAME} \
     ${DOCKER_RUN_ARGS[@]} \
-    "${CONTAINER_IMAGE}" \
+    "${IMAGE_NAME}" \
     "${ACTION_DIR}/src/run-on-arch-commands.sh"
 }
 
