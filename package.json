@@ -1,8 +1,8 @@
 {
-  "name": "run-on-arch",
-  "version": "2.0.7",
-  "description": "Multi architecture support for GitHub Actions",
-  "author": "Umberto Raimondi, Elijah Shaw-Rutschman",
+  "name": "container-on-arch",
+  "version": "1.0.0",
+  "description": "Multi architecture container support for GitHub Actions",
+  "author": "Umberto Raimondi, Elijah Shaw-Rutschman, vdo",
   "license": "BSD-3-Clause",
   "dependencies": {
     "@actions/core": "^1.9.1",
