@@ -24,7 +24,7 @@ jobs:
           image: ${{ matrix.image }}
           env: |
             env_arch: ${{ matrix.arch }}
-            image: ${{ matrix.image }}
+            env_image: ${{ matrix.image }}
 
           # Test multiple argument formats
           dockerRunArgs: |
@@ -40,7 +40,7 @@ jobs:
             echo ::set-output name=host_arch::"$(uname -m)"
             echo ::set-output name=host_distro_info::"$distro_info"
             echo ::set-output name=host_env_arch::"$env_arch"
-            echo ::set-output name=host_env_distro::"$env_distro"
+            echo ::set-output name=host_env_image::"$env_image"
             echo ::set-output name=host_shell_options::"$-"
 
             # List all qemu packages, including qemu-user-static platforms
@@ -54,7 +54,7 @@ jobs:
             echo ::set-output name=distro_info::"$distro_info"
             echo ::set-output name=shebang::"$(head -n 1 "$0")"
             echo ::set-output name=env_arch::"$env_arch"
-            echo ::set-output name=env_distro::"$env_distro"
+            echo ::set-output name=env_image::"$env_image"
             echo ::set-output name=shell_options::"$-"
 
       - name: Assert container receives environment variables
